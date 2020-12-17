@@ -1,22 +1,26 @@
-def delete_db(post_data, db):
-    name = post_data['name']
+def delete_db(user_id, token, post_data, db, list_data):
     email = post_data['email']
-    cur = db.cursor()
-    query = "SELECT * FROM crud_table where email = ('" + str(email) + "') OR name = ('" + str(name) + "')"
-    cur.execute(query)
-    fetch_table = cur.fetchall()
-    list_table = []
-    for table in fetch_table:
-        dict_data = {'id': table[0], 'name': table[1], 'email': table[2], 'role_type': table[3], 'status': table[4]}
-        list_table.append(dict_data)
-    if len(list_table) == 0:
-        return {'Error': 'invalid entry'}
-    elif list_table[0]['name'] != name:
-        return {'Error': 'name is incorrect'}
-    elif list_table[0]['email'] != email:
-        return {'Error': 'email is incorrect'}
-    elif list_table[0]['email'] == email and list_table[0]['name'] == name:
-        query = "DELETE FROM crud_table WHERE email = ('" + str(email) + "')"
+    if len(list_data) == 0:
+        return {'Error': 'invalid voter_id and token'}
+    elif list_data[0]['user_id'] != user_id:
+        return {'Error': 'invalid registered user_id'}
+    elif list_data[0]['token'] != token:
+        return {'Error': 'invalid registered token'}
+    elif list_data[0]['role_name'] == 'admin':
+        cur = db.cursor()
+        query = "SELECT * FROM crud_table where email = ('" + str(email) + "')"
         cur.execute(query)
-        db.commit()
-        return {"User": 'DELETED successfully'}
+        fetch_table = cur.fetchall()
+        list_table = []
+        for table in fetch_table:
+            dict_data = {'id': table[0], 'name': table[1], 'email': table[2], 'role_type': table[3], 'status': table[4]}
+            list_table.append(dict_data)
+        if len(list_table) == 0:
+            return {'Error': 'invalid email'}
+        elif list_table[0]['email'] == email:
+            query = "DELETE FROM crud_table WHERE email = ('" + str(email) + "')"
+            cur.execute(query)
+            db.commit()
+            return {"User": 'DELETED successfully'}
+    else:
+        return {'Error': 'you are not an registered admin to delete'}
