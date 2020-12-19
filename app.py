@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from package_register import database, account_register, validations, password_encryption, login_token, account_login
-from package_data import account_login_fetch, database2, create, read, update, delete
-
+from package_data import login_acct_fetch, database2, create, read, update, delete
+from package_csv import database3, login_acct_fetch2, download, upload
 
 app = Flask(__name__)
 
@@ -33,7 +33,7 @@ def create_data(user_id):
     token = request.headers['token_data']
     post_data = request.get_json()
     db = database2.db_connect2()
-    list_data = account_login_fetch.acct_fetch(user_id, token, db)
+    list_data = login_acct_fetch.acct_fetch(user_id, token, db)
     info = create.create_db(user_id, token, list_data, post_data, db)
 
     return jsonify(info)
@@ -43,7 +43,7 @@ def create_data(user_id):
 def read_data(user_id):
     token = request.headers['token_data']
     db = database2.db_connect2()
-    list_data = account_login_fetch.acct_fetch(user_id, token, db)
+    list_data = login_acct_fetch.acct_fetch(user_id, token, db)
     info = read.read_db(user_id, token, db, list_data)
 
     return jsonify(info)
@@ -54,7 +54,7 @@ def update_data(user_id):
     token = request.headers['token_data']
     post_data = request.get_json()
     db = database2.db_connect2()
-    list_data = account_login_fetch.acct_fetch(user_id, token, db)
+    list_data = login_acct_fetch.acct_fetch(user_id, token, db)
     info = update.update_db(user_id, token, post_data, db, list_data)
 
     return jsonify(info)
@@ -65,8 +65,30 @@ def delete_data(user_id):
     token = request.headers['token_data']
     post_data = request.get_json()
     db = database2.db_connect2()
-    list_data = account_login_fetch.acct_fetch(user_id, token, db)
+    list_data = login_acct_fetch.acct_fetch(user_id, token, db)
     info = delete.delete_db(user_id, token, post_data, db, list_data)
+
+    return jsonify(info)
+
+
+@app.route("/download/user_id=<user_id>", methods=['GET'])
+def download_data(user_id):
+    token = request.headers['token_data']
+    db = database3.db_connect3()
+    list_data = login_acct_fetch2.acct_fetch2(user_id, token, db)
+    file_name = 'crud.csv'
+    info = download.download_csv(user_id, token, list_data, db, file_name)
+
+    return jsonify(info)
+
+
+@app.route("/upload/user_id=<user_id>", methods=['GET'])
+def upload_data(user_id):
+    token = request.headers['token_data']
+    db = database3.db_connect3()
+    list_data = login_acct_fetch2.acct_fetch2(user_id, token, db)
+    file_name = 'crud.csv'
+    info = upload.upload_csv(user_id, token, list_data, db, file_name)
 
     return jsonify(info)
 
