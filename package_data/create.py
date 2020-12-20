@@ -1,6 +1,3 @@
-from uuid import uuid4
-
-
 def create_db(user_id, token, list_data, post_data, db):
     name = post_data['name']
     email = post_data['email']
@@ -15,8 +12,8 @@ def create_db(user_id, token, list_data, post_data, db):
     elif list_data[0]['role_name'] == 'admin':
         cur = db.cursor()
         try:
-            query = "INSERT INTO crud_table (id, name, email, role_type, status) " \
-                    "VALUES ('" + str(uuid4()) + "', '" + str(name) + "', '" + str(email) + "', " \
+            query = "INSERT INTO crud_table (name, email, role_type, status) " \
+                    "VALUES ('" + str(name) + "', '" + str(email) + "', " \
                     "'" + str(role_type) + "', '" + str(status) + "')"
             cur.execute(query)
             db.commit()

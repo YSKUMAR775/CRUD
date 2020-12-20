@@ -15,7 +15,7 @@ def update_db(user_id, token, post_data, db, list_data):
         fetch_table = cur.fetchall()
         list_table = []
         for table in fetch_table:
-            dict_data = {'id': table[0], 'name': table[1], 'email': table[2], 'role_type': table[3], 'status': table[4]}
+            dict_data = {'name': table[0], 'email': table[1], 'role_type': table[2], 'status': table[3]}
             list_table.append(dict_data)
         if len(list_table) == 0:
             return {'Error': 'invalid email'}

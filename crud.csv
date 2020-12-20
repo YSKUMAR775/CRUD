@@ -1,0 +1,7 @@
+name,email,role_type,status
+anil,anil@gmail.com,customer_executive,active
+bharath,bharath@gmail.com,customer_executive,pending
+dimpu,dimpu@gmail.com,admin,inactive
+hemanth,hemanth@gmail.com,customer_executive,inactive
+kumar,kumar@gmail.com,admin,active
+santosh,santosh@gmail.com,admin,pending

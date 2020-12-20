@@ -15,7 +15,6 @@ def lgn_token(list_data, post_data, db, password_check_final):
         token = jwt.encode(
             {'email': email_check, 'password': password_check,
              'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30)}, JWT_SECRET_KEY)
-
         token_data = token.decode('UTF-8')
 
         cur = db.cursor()
